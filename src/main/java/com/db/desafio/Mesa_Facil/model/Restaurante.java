@@ -1,4 +1,4 @@
-package com.db.desafio.Mesa_Facil.models;
+package com.db.desafio.Mesa_Facil.model;
 
 import com.db.desafio.Mesa_Facil.enuns.StatusMesa;
 import jakarta.persistence.Entity;
@@ -28,8 +28,6 @@ public class Restaurante {
     private Long id;
 
     private String nome;
-
-    private Map<Integer, StatusMesa> mesas = new HashMap<>();
 
     private List<Reserva> reservas = new ArrayList<>();
 
