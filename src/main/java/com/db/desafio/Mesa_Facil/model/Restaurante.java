@@ -36,10 +36,13 @@ public class Restaurante {
     @Column
     private String nome;
 
+    @Column
+    private Integer quantidadeDeMesas;
+
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Reserva> reservas = new ArrayList<>();
+    private List<Reserva> reservas= new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
