@@ -22,7 +22,7 @@ public class ClienteController implements ClienteSwaggerDoc {
 
     @Override
     @PostMapping
-    public ResponseEntity<ClienteResponseDto> cadastrar(@Valid @RequestBody NovoClienteDto dto) {
+    public ResponseEntity<ClienteResponseDto> cadastrar(@RequestBody @Valid NovoClienteDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceI.cadastrar(dto));
     }
 }
