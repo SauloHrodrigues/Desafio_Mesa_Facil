@@ -29,7 +29,7 @@ public class ClienteServiceImpl implements ClienteServiceI {
         Optional<Cliente> cliente = repository.findByNomeIgnoreCase(dto.nome());
         if(cliente.isPresent()){
             throw new ClienteJaExisteException("O cliente: "+
-                    cliente.get().getNome()+" já esta cadastrado no nosso banco de dados." +
+                    cliente.get().getNome().toUpperCase()+" já esta cadastrado no nosso banco de dados." +
                     " Seu id é: "+ cliente.get().getId());
         }
     }
