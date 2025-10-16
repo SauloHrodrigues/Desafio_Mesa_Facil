@@ -16,5 +16,5 @@ public interface ClienteSwaggerDoc {
     @Operation(summary = "Receber um novo cliente")
     @ApiResponse(responseCode = "201", description = "Cadastrar um novo cliente com sucesso.",
             content = @Content(schema = @Schema(implementation = NovoClienteDto.class)))
-    ResponseEntity<ClienteResponseDto> cadastrar(@Valid @RequestBody NovoClienteDto dto);
+    ResponseEntity<ClienteResponseDto> cadastrar(NovoClienteDto dto);
 }
