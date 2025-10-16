@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "Restaturante",description = "Endpoints para gerenciar restaurantes")
 public interface RestauranteSwaggesDoc {
 
-    @Operation(summary = "Receber voto")
-    @ApiResponse(responseCode = "201", description = "Receber um voto com sucesso.",
+    @Operation(summary = "Receber novo restaurante")
+    @ApiResponse(responseCode = "201", description = "Cadastrar um novo restaurante com sucesso.",
             content = @Content(schema = @Schema(implementation = NovoRestauranteDto.class)))
     ResponseEntity<RestauranteResponseDto> cadastrar(@Valid @RequestBody NovoRestauranteDto dto);
 }
