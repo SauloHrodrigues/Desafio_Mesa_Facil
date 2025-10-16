@@ -22,8 +22,8 @@ public class RestauranteServiceImpl implements RestauranteServiceI {
     public RestauranteResponseDto cadastrar(NovoRestauranteDto dto) {
         validarCadastro(dto);
         Restaurante restaurante = mapper.toEntity(dto);
-        repository.save(restaurante);
-        return mapper.toResponse(restaurante);
+        Restaurante salvo = repository.save(restaurante);
+        return mapper.toResponse(salvo);
     }
 
     private void validarCadastro(NovoRestauranteDto dto) {
