@@ -3,6 +3,7 @@ package com.db.desafio.Mesa_Facil.service.implementacoes;
 import com.db.desafio.Mesa_Facil.dtos.cliente.ClienteResponseDto;
 import com.db.desafio.Mesa_Facil.dtos.cliente.NovoClienteDto;
 import com.db.desafio.Mesa_Facil.exceptions.cliente.ClienteJaExisteException;
+import com.db.desafio.Mesa_Facil.exceptions.cliente.ClienteNaoEncontradoException;
 import com.db.desafio.Mesa_Facil.mapper.ClienteMapper;
 import com.db.desafio.Mesa_Facil.model.Cliente;
 import com.db.desafio.Mesa_Facil.repository.ClienteRepository;
@@ -33,4 +34,16 @@ public class ClienteServiceImpl implements ClienteServiceI {
                     " Seu id é: "+ cliente.get().getId());
         }
     }
+
+    protected Cliente buscarCliente(Long id){
+        Optional<Cliente> cliente= repository.findById(id);
+
+        if(cliente.isPresent()){
+            return cliente.get();
+        } else {
+            throw new ClienteNaoEncontradoException("O id: "+id+
+                    " não corresponde a nenhum cliente do nosso banco de dados;");
+        }
+    }
+
 }

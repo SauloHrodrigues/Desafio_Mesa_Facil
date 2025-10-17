@@ -34,6 +34,17 @@ public class RestauranteServiceImpl implements RestauranteServiceI {
                             "O id do restaurante é: " + restaurante.get().getId()
             );
         }
-
     }
+
+    protected Restaurante buscarRestaurante(Long id){
+        Optional<Restaurante> restaurante = repository.findById(id);
+
+        if(restaurante.isPresent()){
+            return restaurante.get();
+        } else {
+            throw new RestauranteJaExisteException("O id: "+id+
+                    " não corresponde a nenhum restaurante do nosso banco de dados;");
+        }
+    }
+
 }

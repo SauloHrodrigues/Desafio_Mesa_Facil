@@ -26,5 +26,5 @@ public interface ReservaSwaggerDoc {
             content = @Content(schema = @Schema(implementation = ReservaResponse.class)))
     ResponseEntity<Page<ReservaResponse>> listarReservas(
             @Parameter(description = "Parâmetros de paginação e ordenação")
-            @PageableDefault(size = 10, sort = {"data"}) Pageable pageable);
+            @PageableDefault(size = 10, sort = {"dataHora"}) Pageable pageable);
 }

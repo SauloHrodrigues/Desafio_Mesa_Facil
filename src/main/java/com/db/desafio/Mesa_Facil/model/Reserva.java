@@ -1,6 +1,7 @@
 package com.db.desafio.Mesa_Facil.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,13 +12,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,27 +37,41 @@ public class Reserva {
     private Long id;
 
     @Column
-    private LocalDateTime data;
+    private LocalDateTime dataHora;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
     private Cliente cliente;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurante_id")
+    @JsonIgnore
+    @ToString.Exclude
     private Restaurante restaurante;
+
+    @PrePersist
+    @PreUpdate
+    private void ajustarPrecisao() {
+        if (dataHora != null) {
+            dataHora = dataHora.truncatedTo(ChronoUnit.MINUTES);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Reserva reserva)) return false;
-        return Objects.equals(getData(), reserva.getData()) && Objects.equals(getCliente(), reserva.getCliente()) && Objects.equals(getRestaurante(), reserva.getRestaurante());
+        return Objects.equals(getDataHora(), reserva.getDataHora())
+                && Objects.equals(getCliente(), reserva.getCliente())
+                && Objects.equals(getRestaurante(), reserva.getRestaurante());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getData(), getCliente(), getRestaurante());
+        return Objects.hash(getDataHora(), getCliente(), getRestaurante());
     }
 }

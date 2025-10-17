@@ -1,6 +1,7 @@
 package com.db.desafio.Mesa_Facil.model;
 
 import com.db.desafio.Mesa_Facil.enuns.StatusMesa;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
