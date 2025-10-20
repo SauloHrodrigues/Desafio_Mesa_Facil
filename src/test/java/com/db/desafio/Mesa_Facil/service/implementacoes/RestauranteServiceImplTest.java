@@ -30,7 +30,7 @@ class RestauranteServiceImplTest {
     @DisplayName("Deve realizar o cadastro de um novo restaurante com sucesso.")
     void cadastrar() {
         NovoRestauranteDto requestDto = new NovoRestauranteDto("Vilani",50);
-        Restaurante restaurante = new Restaurante(1L,"vilani",50,null);
+        Restaurante restaurante = new Restaurante(1L,"vilani",50,0,null);
 
         when(repository.findByNomeIgnoreCase(requestDto.nome())).thenReturn(Optional.empty());
         when(repository.save(any(Restaurante.class))).thenReturn(restaurante);
@@ -46,7 +46,7 @@ class RestauranteServiceImplTest {
     @DisplayName("Deve lançar exceção ao tentar cadastrar um restaurante que já existe no banco ")
     void lancarExcecaoAoCadastrar() {
         NovoRestauranteDto requestDto = new NovoRestauranteDto("Vilani",50);
-        Restaurante restaurante = new Restaurante(1L,"vilani",50,null);
+        Restaurante restaurante = new Restaurante(1L,"vilani",50,0,null);
 
         when(repository.findByNomeIgnoreCase(requestDto.nome())).thenReturn(Optional.of(restaurante));
 
