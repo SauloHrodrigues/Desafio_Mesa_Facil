@@ -3,6 +3,8 @@ package com.db.desafio.Mesa_Facil.service.implementacoes;
 import com.db.desafio.Mesa_Facil.dtos.reserva.NovaReserva;
 import com.db.desafio.Mesa_Facil.dtos.reserva.ReservaResponse;
 import com.db.desafio.Mesa_Facil.exceptions.reserva.ReservaJaExisteException;
+import com.db.desafio.Mesa_Facil.exceptions.reserva.ReservaNaoExisteException;
+import com.db.desafio.Mesa_Facil.exceptions.restaurante.MesaIndisponivelException;
 import com.db.desafio.Mesa_Facil.mapper.ReservaMapper;
 import com.db.desafio.Mesa_Facil.model.Cliente;
 import com.db.desafio.Mesa_Facil.model.Reserva;
@@ -34,9 +36,11 @@ public class ReservaServiceImpl implements ReservaServiceI {
         Cliente cliente = clienteService.buscarCliente(dto.clienteId());
         Restaurante restaurante = restauranteService.buscarRestaurante(dto.restauranteId());
         validaReserva(cliente,restaurante,dto);
+        restaurante.ocuparMesa();
+        restaurante = restauranteService.salvarRestaurante(restaurante);
         Reserva reserva = mapper.toEntity(dto.dataHora(),cliente,restaurante);
-        Reserva reservaSalva =repository.save(reserva);
-        return mapper.toResponse(reservaSalva);
+        reserva  = repository.save(reserva);
+        return mapper.toResponse(reserva);
     }
 
     @Override
@@ -45,7 +49,26 @@ public class ReservaServiceImpl implements ReservaServiceI {
         return reservas;
     }
 
-    private void validaReserva(Cliente cliente, Restaurante restaurante, NovaReserva dto){
+    @Override
+    public void cancelarReserva(Long id){
+        Reserva reserva = buscarReserva(id);
+        reserva.getRestaurante().liberarMesa();
+        restauranteService.salvarRestaurante(reserva.getRestaurante());
+        repository.delete(reserva);
+    }
+
+    protected Reserva buscarReserva(Long id){
+        Optional<Reserva> reserva = repository.findById(id);
+
+        if(reserva.isPresent()){
+            return reserva.get();
+        } else {
+            throw new ReservaNaoExisteException("A reserva id: "+id+
+                    " não corresponde a nenhuma reserva do nosso banco de dados;");
+        }
+    }
+
+    protected void validaReserva(Cliente cliente, Restaurante restaurante, NovaReserva dto){
         Optional<Reserva> reserva = repository.findByClienteAndRestauranteAndDataHora(cliente,
                 restaurante, dto.dataHora().truncatedTo(ChronoUnit.MINUTES));
 
@@ -53,7 +76,13 @@ public class ReservaServiceImpl implements ReservaServiceI {
             throw new ReservaJaExisteException("O cliente: "+cliente.getNome().toUpperCase()+
                     " já tem reserva no restaurante: "+reserva.get());
         }
+        validarMesaLivre(restaurante);
     }
 
-
+    protected void validarMesaLivre(Restaurante restaurante){
+        if (restaurante.getQuantidadeDeMesas() < restaurante.getMesasOcupadas()){
+            throw new MesaIndisponivelException("O restaurante: "+
+                    restaurante.getNome().toUpperCase()+" está sem mesa disponivel;");
+        }
+    }
 }

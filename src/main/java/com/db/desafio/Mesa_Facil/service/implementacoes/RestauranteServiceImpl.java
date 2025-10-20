@@ -47,4 +47,8 @@ public class RestauranteServiceImpl implements RestauranteServiceI {
         }
     }
 
+    protected Restaurante salvarRestaurante(Restaurante restaurante){
+        return repository.save(restaurante);
+    }
+
 }

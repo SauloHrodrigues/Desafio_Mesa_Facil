@@ -40,14 +40,14 @@ public class Reserva {
     private LocalDateTime dataHora;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "cliente_id", nullable = false)
     @JsonIgnore
     @ToString.Exclude
     private Cliente cliente;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "restaurante_id")
     @JsonIgnore
     @ToString.Exclude

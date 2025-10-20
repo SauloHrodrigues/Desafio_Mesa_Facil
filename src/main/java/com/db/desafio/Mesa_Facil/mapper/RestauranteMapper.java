@@ -14,6 +14,7 @@ public interface RestauranteMapper {
 
     @Mapping(target = "nome", expression = "java(dto.nome() != null ? dto.nome().toLowerCase() : null)")
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "mesasOcupadas", constant = "0")
     @Mapping(target = "reservas", ignore = true)
     Restaurante toEntity(NovoRestauranteDto dto);
 

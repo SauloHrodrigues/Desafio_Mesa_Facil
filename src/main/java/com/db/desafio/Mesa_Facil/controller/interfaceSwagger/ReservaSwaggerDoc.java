@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "Reservas", description = "Endpoints para gerenciar reservas")
 public interface ReservaSwaggerDoc {
@@ -27,4 +28,10 @@ public interface ReservaSwaggerDoc {
     ResponseEntity<Page<ReservaResponse>> listarReservas(
             @Parameter(description = "Parâmetros de paginação e ordenação")
             @PageableDefault(size = 10, sort = {"dataHora"}) Pageable pageable);
+
+    @Operation(summary = "Cancelar reserva")
+    @ApiResponse(responseCode = "204", description = "Cancela uma reserva com sucesso.")
+    @ApiResponse(responseCode = "404", description = "Reserva não encontrada.")
+     ResponseEntity<Void> cancelarReserva(@Parameter(description = "ID da reserva.",
+            example = "42") @PathVariable Long id);
 }

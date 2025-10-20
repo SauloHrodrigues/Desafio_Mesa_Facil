@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,10 +41,23 @@ public class Restaurante {
     @Column
     private Integer quantidadeDeMesas;
 
+    @Column
+    private  Integer mesasOcupadas;
+
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Reserva> reservas= new ArrayList<>();
+
+    public void ocuparMesa(){
+        mesasOcupadas++;
+        quantidadeDeMesas--;
+    }
+
+    public void liberarMesa(){
+        mesasOcupadas--;
+        quantidadeDeMesas++;
+    }
 
     @Override
     public boolean equals(Object o) {
