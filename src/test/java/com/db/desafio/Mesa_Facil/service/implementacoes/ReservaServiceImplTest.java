@@ -111,6 +111,7 @@ class ReservaServiceImplTest {
     }
 
     @Test
+    @DisplayName("Deve retornar uma lista de resrvas cadastradas.")
     void listaDeReservas() {
         Reserva reserva01 = new Reserva(2L,LocalDateTime.parse("13/09/2026 17:30",formatter),cliente,restaurante);
         Reserva reserva03 = new Reserva(3L,LocalDateTime.parse("14/09/2026 20:30",formatter),cliente,restaurante);
